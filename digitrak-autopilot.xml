@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+ 
+<!-- Autopilot Configuration
+
+This is derived from the generic autopilot included with FlightGear.
+
+ -->
+
+<!-- Each component is evaluated in the order specified.  You can make up -->
+<!-- property names to pass the result of one component on to a subsequent -->
+<!-- component. -->
+
+
+<PropertyList>
+
+<!-- =============================================================== -->
+  <!-- Roll Axis Modes                                                 -->
+  <!-- =============================================================== -->
+
+  <!-- GPS NAV MODE -->
+
+    <!-- True Heading hold.  2 stage cascade controller. -->
+
+  <!-- Stage #1 sets target roll based on diff between current track -->
+  <!-- and selected track. -->
+  <pid-controller>
+    <name>GPS Nav Mode Stage 1</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/digitrak/locks/gps-track</prop>
+      <value>on</value>
+    </enable>
+    <input>
+	<!--
+	The digitrak has its own internal DG. Not sure what to do about that. But this is not DG mode, this models GPS mode behavoir. Roll until GPS track and selected track agree.
+	 -->
+	 <prop>/instrumentation/gps/magnetic-bug-error-deg</prop>
+    </input>
+    <reference>
+      <!-- might be better as settings/selected-track? Would require scripting? -->
+      <prop>
+	   <value>
+	  /instrumentation/gps/tracking-bug
+	   </value>
+	  </prop>
+    </reference>
+    <output>
+      <prop>/autopilot/digitrak/internal/target-roll-deg</prop>
+    </output>
+    <config>
+      <Kp>-1.0</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>     <!-- input value weighing factor -->
+      <alpha>0.1</alpha>   <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>   <!-- input value weighing factor for -->
+                           <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Td>0.00001</Td>     <!-- derivator time -->
+      <u_min>-20.0</u_min> <!-- minimum output clamp -->
+      <u_max>20.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #2 drives the ailerons to achieve the desired roll deg. -->
+  <pid-controller>
+    <name>GPS Nav Mode Stage 2</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/digitrak/locks/gps-track</prop>
+      <value>on</value>
+    </enable>
+    <input>
+      <prop>/orientation/roll-deg</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/digitrak/internal/target-roll-deg</prop>
+    </reference>
+    <output>
+      <prop>/controls/flight/aileron</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+  
+    <!-- HEADING HOLD MODE -->
+
+    <!-- True Heading hold.  2 stage cascade controller. -->
+
+  <!-- Stage #1 sets target roll based on diff between current heading -->
+  <!-- and target heading. -->
+  <pid-controller>
+    <name>HDG Hold Mode Stage 1</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/digitrak/locks/hdg-hold</prop>
+      <value>on</value>
+    </enable>
+    <input>
+	<!--
+	The digitrak has its own internal DG. Not sure what to do about that.
+	 -->
+	 <prop>/instrumentation/gps/magnetic-bug-error-deg</prop>
+    </input>
+    <reference>
+      <prop>
+	   <value>
+	  /instrumentation/gps/tracking-bug
+	   </value>
+	  </prop>
+    </reference>
+    <output>
+      <prop>/autopilot/digitrak/internal/target-roll-deg</prop>
+    </output>
+    <config>
+      <Kp>-1.0</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>     <!-- input value weighing factor -->
+      <alpha>0.1</alpha>   <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>   <!-- input value weighing factor for -->
+                           <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>        <!-- integrator time -->
+      <Td>0.00001</Td>     <!-- derivator time -->
+      <u_min>-20.0</u_min> <!-- minimum output clamp -->
+      <u_max>20.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+
+  <!-- Stage #2 drives the ailerons to achieve the desired roll deg. -->
+  <pid-controller>
+    <name>HDG Hold Mode Stage 2</name>
+    <debug>false</debug>
+    <enable>
+      <prop>/autopilot/digitrak/locks/hdg-hold</prop>
+      <value>on</value>
+    </enable>
+    <input>
+      <prop>/orientation/roll-deg</prop>
+    </input>
+    <reference>
+      <prop>/autopilot/digitrak/internal/target-roll-deg</prop>
+    </reference>
+    <output>
+      <prop>/controls/flight/aileron</prop>
+    </output>
+    <config>
+      <Kp>0.1</Kp>        <!-- proportional gain -->
+      <beta>1.0</beta>    <!-- input value weighing factor -->
+      <alpha>0.1</alpha>  <!-- low pass filter weighing factor -->
+      <gamma>0.0</gamma>  <!-- input value weighing factor for -->
+                          <!-- unfiltered derivative error -->
+      <Ti>10.0</Ti>       <!-- integrator time -->
+      <Td>0.00001</Td>    <!-- derivator time -->
+      <u_min>-1.0</u_min> <!-- minimum output clamp -->
+      <u_max>1.0</u_max>  <!-- maximum output clamp -->
+    </config>
+  </pid-controller>
+   
+</PropertyList>
