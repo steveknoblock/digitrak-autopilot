@@ -1,0 +1,618 @@
+<?xml version="1.0"?>
+<PropertyList>
+ <name>Digitrak Autopilot</name>
+ <w-base>256</w-base>
+ <h-base>256</h-base>
+
+<!-- Begin Layers --> 
+<layers>
+
+  <layer>
+   <name>face</name>
+   <texture>
+    <path>Aircraft/Instruments/Textures/digitrak.rgb</path>
+    <x1>0</x1>                 <!-- lower boundary for texture cropping-->
+    <y1>0</y1>              <!-- left boundary  for texture cropping-->
+    <x2>1.0</x2>              <!-- upper boundary  for texture cropping-->
+    <y2>1.0</y2>               <!-- right boundary  for texture cropping-->
+   </texture>                  <!-- closing texure tag -->
+   <w>128</w>
+   <h>128</h>
+  </layer>                     <!-- closing layer tag -->
+  
+    <!--
+		This determines whether the display is on or off (and enables it to flash).
+	 -->
+<layer>
+ <name>heading window 1</name>
+ <type>switch</type>
+ 
+ <layer>
+    <!-- 
+   display on
+   and
+   status disengaged
+   and
+   gps valid
+   and hdg
+   annunciator on to flash
+    -->
+   <condition>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">disengaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </and>
+   </condition> 
+      
+	  <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		    <chunk>
+		     <type>literal</type> <!-- static text -->
+		     <text>OFF</text> <!-- fixed value -->
+		     <format></format>
+		    </chunk>
+		   </chunks>
+		   </layer>
+ </layer>
+ 
+ <layer>
+ <name>heading window2</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status disengaged
+   and
+   gps invalid
+    -->
+   <condition>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">disengaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">off</value>
+	 </equals>
+	 </and>
+   </condition> 
+      
+	  <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		    <chunk>
+		     <type>literal</type> <!-- static text -->
+		     <text>---</text> <!-- fixed value -->
+		     <format></format>
+		    </chunk>
+		   </chunks>
+		   </layer>
+ </layer>
+ 
+ <layer>
+ <name>heading window3</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status engaged
+   and
+   gps valid
+   and NOT intercepting a course
+    -->
+   <condition>
+   <and>
+   <and>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">engaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">on</value>
+	 </equals>
+	</and>
+	<not>
+	<equals>
+	      <property>/autopilot/digitrak/internal/course-intercept</property>     
+	      <value type="string">on</value>
+	 </equals>
+	</not>
+	</and>
+	<not>
+	<equals>
+	      <property>/autopilot/digitrak/internal/course-captured</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </not>
+	</and>
+   </condition> 
+      
+		    <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		     <chunk>
+		      <type>number-value</type>
+		      <property>/instrumentation/gps/tracking-bug</property>
+			  <!-- scale 1.0 --><!-- /scale --> 
+		      <format>%3.0f</format>
+		     </chunk>
+		    </chunks>
+		   </layer>
+ </layer>
+ 
+<layer>
+ <name>heading window 4</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status engaged
+   and
+   gps invalid
+    -->
+   <condition>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">engaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">off</value>
+	 </equals>
+	 </and>
+   </condition> 
+      
+	  <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		    <chunk>
+		     <type>literal</type> <!-- static text -->
+		     <text>***</text> <!-- does not seem to like pipe |-| fails and -|-|- fails fixed value -->
+		     <format></format>
+		    </chunk>
+		   </chunks>
+		   </layer>
+ </layer>
+  
+  
+<layer>
+ <name>heading window 5</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status engaged
+   and
+   gps valid
+   and
+   course-captured
+    -->
+   <condition>
+   <and>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">engaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/course-captured</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </and>
+   </condition> 
+      
+	  <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		    <chunk>
+		     <type>literal</type> <!-- static text -->
+		     <text>-0-</text>
+		     <format></format>
+		    </chunk>
+		   </chunks>
+		   </layer>
+ </layer>
+ 
+ <layer>
+ <name>heading window 6</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status engaged
+   and
+   gps valid
+   and
+   course-intercept
+    -->
+   <condition>
+   <and>
+   <and>
+     <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">engaged</value>
+       </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/gps-valid</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </and>
+	 <equals>
+	      <property>/autopilot/digitrak/internal/course-intercept</property>     
+	      <value type="string">on</value>
+	 </equals>
+	 </and>
+   </condition> 
+      
+	  <name>dg</name> <!-- digital gyro heading -->
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		     <chunk>
+		      <type>number-value</type>
+		      <property>/orientation/heading-magnetic-deg[0]</property>
+			  <!-- scale 1.0 --><!-- /scale --> 
+		      <format>%3.0f</format>
+		     </chunk>
+		    </chunks>
+		   </layer>
+ </layer>
+ 
+    <layer>
+ <name>heading window init</name>
+ <type>switch</type>
+ <layer>
+    <!-- 
+   display on
+   and
+   status init
+    -->
+   <condition>
+    <and>
+       <equals>
+	    <property>/autopilot/digitrak/annunciators/hdg</property>
+        <value type="string">on</value>
+       </equals>   
+	   <equals>
+        <property>/autopilot/digitrak/internal/status</property>     
+        <value type="string">init</value>
+       </equals>
+	 </and>
+   </condition> 
+      
+	  
+	  <name>gps</name>
+		    <type>text</type>
+		    <font>led</font>
+		    <point-size>9</point-size>
+		    <color>
+		     <red>0.75</red> 
+		     <green>0.0</green>
+		     <blue>0.0</blue>
+		    </color>
+			<transformations>
+		    <transformation>
+		     <type>x-shift</type>
+		     <offset>-15</offset>
+		    </transformation>
+		    <transformation>
+		     <type>y-shift</type>
+		     <offset>+25</offset>
+		    </transformation>
+		   </transformations>
+		    <chunks>
+		    <chunk>
+		     <type>literal</type>
+		     <text>---</text>
+		     <format></format>
+		    </chunk>
+		   </chunks>
+		   </layer>
+ </layer>
+ 
+</layers>
+ 
+<!-- =================================================== -->
+<!-- Actions                                             -->
+<!-- =================================================== -->
+  
+<actions>
+ 
+ <!-- this requires an adjust style code 
+ 
+ this combines the two kinds of code in the manual, the simple adjust and the binding with a condition, the idea is not not change the heading unless the AP is engaged
+
+ -->
+ 
+ 
+ <!-- I am reducing the values by half because the graphic is scaled 50% at the 127 x 127 w x h.
+  
+  Original:
+  x: -127
+  y: 0
+  w: 127
+  h: 127
+  
+  These are cut in half to accomodate "inner" std turn buttons.
+  
+  
+  Further: To better fit the actions to the graphical buttons, I have modified the dimensions and position.
+     
+   
+  -->
+  
+ <action>
+   <name>standard left turn</name>
+   <button>0</button>
+   <x>-32</x>
+   <y>20</y>
+   <w>36</w>
+   <h>36</h>
+    <binding>
+    <command>nasal</command>
+     <script>
+      digitrak.std_trn_lt();
+     </script>
+   </binding>
+  </action>
+  
+  <action>
+   <name>decrement heading</name>
+   <button>0</button>
+   <x>-45</x>
+   <y>-26</y>
+   <w>36</w>
+   <h>36</h>
+  
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/gps/tracking-bug</property>
+    <step>-1.0</step> <!-- testing only -->
+    <min>0</min>   
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding> 
+  </action>
+  
+  <!-- I am reducing the values by half because the graphic is scaled 50% at the 127 x 127 w x h.
+  
+  Original:
+  x: 0
+  y: 0
+  w: 127
+  h: 127
+  -->
+  
+   <action>
+   <name>increment heading</name>
+   <button>0</button>
+   <x>9</x>
+   <y>-26</y>
+   <w>36</w>
+   <h>36</h>
+  
+   <binding>
+    <command>property-adjust</command>
+    <property>/instrumentation/gps/tracking-bug</property>
+    <step>1.0</step>
+    <min>0</min>   
+    <max>360</max>
+    <wrap>1</wrap>
+   </binding> 
+  </action>
+   
+    <!-- 
+	 The a/p on button will need to be scripted so it can initiate a 10 second timer before engaging the a/p.
+	-->
+   
+   <!-- I am reducing the values by half because the graphic is scaled 50% at the 127 x 127 w x h.
+  
+  Original:
+  x: -127
+  y: -127
+  w: 127
+  h: 127
+  
+  Changing to fit button.
+  
+  -->
+  
+   <action>
+   <name>AP On/Engage Button</name>
+   <button>0</button>
+   <x>-24</x>
+   <y>-52</y>
+   <w>24</w>
+   <h>20</h>
+   <binding>
+    <command>nasal</command>
+     <script>
+      digitrak.on_button();
+     </script>
+   </binding>
+  </action>
+  
+  <!-- I am reducing the values by half because the graphic is scaled 50% at the 127 x 127 w x h.
+  
+  Original:
+  x: 0
+  y: -127
+  w: 127
+  h: 127
+  -->
+   <action>
+   <name>AP Off/Disengage Button</name>
+   <button>0</button>
+   <x>0</x>
+   <y>-52</y>
+   <w>24</w>
+   <h>20</h>
+   <binding>
+    <command>nasal</command>
+     <script>
+      digitrak.of_button();
+     </script>
+   </binding>
+  </action>
+    
+</actions>
+ 
+</PropertyList>
