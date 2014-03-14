@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+<!-- Digitrak Autopilot Settings -->
+
+ <name>digitrak-settings</name>
+ <width>300</width>
+ <height>240</height>
+ <modal>false</modal>
+
+  <text>
+   <x>10</x>
+   <y>210</y>
+   <label>Digitrak Autopilot</label>
+  </text>
+ 
+  <checkbox>
+   <x>30</x>
+   <y>150</y>
+   <width>20</width>
+   <height>20</height>
+   <label>GPS Valid</label>
+   <property>/autopilot/digitrak/internal/gps-valid</property>
+ </checkbox>
+ 
+  <group>
+  <y>10</y>
+
+  <button>
+   <x>10</x>
+   <y>0</y>
+   <legend>OK</legend>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+   <default>true</default>
+  </button>
+
+  <button>
+   <x>60</x>
+   <y>0</y>
+   <legend>Apply</legend>
+   <binding>
+    <command>dialog-apply</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>140</x>
+   <y>0</y>
+   <legend>Reset</legend>
+   <binding>
+    <command>dialog-update</command>
+   </binding>
+  </button>
+
+  <button>
+   <x>220</x>
+   <y>0</y>
+   <legend>Cancel</legend>
+   <binding>
+    <command>dialog-close</command>
+   </binding>
+  </button>
+
+ </group>
+
+</PropertyList>
